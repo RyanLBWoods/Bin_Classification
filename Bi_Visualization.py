@@ -14,6 +14,7 @@ wl = wl[0]
 plt.figure(figsize=(15, 8))
 ax1 = plt.subplot(111)
 ax1.set_title("Optical Reflectance Intensity of Spectrum")
+ax1.grid(color='lightgrey', linestyle='-', linewidth=0.5)
 plt.xlabel('Wavelength')
 plt.ylabel('Optical Reflectance Intensity')
 i = 0
