@@ -17,7 +17,7 @@ ax1.set_title("Optical Reflectance Intensity of Spectrum")
 ax1.grid(color='lightgrey', linestyle='-', linewidth=0.5)
 plt.xlabel('Wavelength')
 plt.ylabel('Optical Reflectance Intensity')
-i = 0
+
 y = y.tolist()
 for i in range(len(y)):
     if y[i] == 0:
