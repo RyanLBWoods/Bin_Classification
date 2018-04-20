@@ -24,7 +24,7 @@ for col in x.columns:
 x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, random_state=0)
 # RFECV with Linear SVC
 lsvc = LinearSVC()
-svc_selector = RFECV(estimator=lsvc, step=1, cv=model_selection.StratifiedKFold(5), scoring='accuracy')
+svc_selector = RFECV(estimator=lsvc, step=1, cv=model_selection.StratifiedKFold(3), scoring='accuracy')
 svc_selector.fit(x, y)
 print("Linear SVC model")
 print("Optimal number of features: %d" % svc_selector.n_features_)
@@ -47,7 +47,7 @@ ax1.plot(range(1, len(svc_selector.grid_scores_) + 1), svc_selector.grid_scores_
 
 # RFECV with Decision Tree Classifier
 dt = DecisionTreeClassifier(random_state=0)
-dt_selector = RFECV(estimator=dt, step=1, cv=model_selection.StratifiedKFold(5), scoring='accuracy')
+dt_selector = RFECV(estimator=dt, step=1, cv=model_selection.StratifiedKFold(3), scoring='accuracy')
 dt_selector.fit(x, y)
 print("Decision Tree Classifier Model")
 print("Optimal number of features: %d" % dt_selector.n_features_)
