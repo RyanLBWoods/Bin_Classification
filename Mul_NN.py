@@ -2,33 +2,54 @@ import pandas as pd
 import time
 import matplotlib.pyplot as plt
 from sklearn import neural_network
-from sklearn import cross_validation
+from sklearn import model_selection
 
 # Load data
 x = pd.read_csv('./multiclass/X.csv', header=None)
 y = pd.read_csv('./multiclass/Y.csv', header=None)
 wl = pd.read_csv('./multiclass/Wavelength.csv', header=None)
-x_test = pd.read_csv('./multiclass/XtoClassify.csv', header=None)
+test = pd.read_csv('./multiclass/XtoClassify.csv', header=None)
 
 # Convert y and wl to one-dimensional array
 y = y[0]
 wl = wl[0]
 
-start = time.time()
+best = []
+# Split training and testing sets
+x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, random_state=0)
 
-clf = neural_network.MLPClassifier(solver='lbfgs', activation='logistic', random_state=1)
-# Cross validation
-t_mae = - cross_validation.cross_val_score(clf, x, y, cv=5, scoring='neg_mean_absolute_error')
-t_mse = - cross_validation.cross_val_score(clf, x, y, cv=5, scoring='neg_mean_squared_error')
-print('Mean absolute error of 5-fold cross validation：', t_mae)
-print('Mean squared error of 5-fold cross validation：',t_mse)
+hl = []
+n = 1
+time_use = []
+while n < 11:
+    for i in range(10):
+        hl.append(n)
+        hls = tuple(hl)
+        clf = neural_network.MLPClassifier(hidden_layer_sizes=hls, solver='lbfgs', activation='relu', random_state=1)
+        start = time.time()
+        clf.fit(x_train, y_train)
+        cost = time.time() - start
+        y_predict = clf.predict(x_test)
+        correct = 0
+        for j in range(len(y_predict)):
+            if y_predict[j] == y_test.iloc[j]:
+                correct = correct + 1
+        ac = correct / len(y_test)
+        if ac == 1:
+            best.append(hls)
+            time_use.append(str(cost))
+            print(hls)
+            print(cost)
+    hl = []
+    n = n + 1
+exit(0)
+clf = neural_network.MLPClassifier(hidden_layer_sizes=best[1], solver='lbfgs', activation='logistic', random_state=1)
 
 # Train model
-start = time.time()
 clf.fit(x, y)
 print('Training cost', time.time() - start, 'second')
 start = time.time()
-y_predict = clf.predict(x_test)
+y_predict = clf.predict(test)
 print('Prediction test cost', time.time() - start, 'second')
 
 # Output prediction to csv file
@@ -44,14 +65,14 @@ plt.xlabel('Wavelength')
 plt.ylabel('Optical Reflectance Intensity')
 for i in range(len(y_predict)):
     if y_predict[i] == 0:
-        plt.plot(wl, x_test.iloc[i], 'b', linewidth=0.5)
+        plt.plot(wl, test.iloc[i], 'b', linewidth=0.5)
     elif y_predict[i] == 1:
-        plt.plot(wl, x_test.iloc[i], 'g', linewidth=0.5)
+        plt.plot(wl, test.iloc[i], 'g', linewidth=0.5)
     elif y_predict[i] == 2:
-        plt.plot(wl, x_test.iloc[i], 'pink', linewidth=0.5)
+        plt.plot(wl, test.iloc[i], 'pink', linewidth=0.5)
     elif y_predict[i] == 3:
-        plt.plot(wl, x_test.iloc[i], 'r', linewidth=0.5)
+        plt.plot(wl, test.iloc[i], 'r', linewidth=0.5)
     elif y_predict[i] == 4:
-        plt.plot(wl, x_test.iloc[i], 'y', linewidth=0.5)
+        plt.plot(wl, test.iloc[i], 'y', linewidth=0.5)
 plt.tight_layout()
 plt.show()
