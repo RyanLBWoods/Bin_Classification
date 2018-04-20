@@ -48,9 +48,47 @@ print("The %dth and % dth was selected" % ((selected_indexes1[0] + 1), (selected
       "which is wavelength of %f and %f" % (wl[selected_indexes1[0]], wl[selected_indexes1[1]]))
 print("Accuracy: %s" % clf.score(x_test, y_test))
 
+# Plot transformed X and Y
+plt.figure(figsize=(15, 8))
+ax1 = plt.subplot(221)
+ax1.set_title("Transformed X and Y for Linear SVC")
+ax1.set_xlabel("Optical Reflectance Intensity on Wavelength %f" % wl[selected_indexes1[0]])
+ax1.set_ylabel("Optical Reflectance Intensity on Wavelength %f" % wl[selected_indexes1[1]])
+ax1.set_xticks([500, 600, 700], ('500', '600', '700'))
+y_list = y.tolist()
+for i in range(len(y_list)):
+    if y_list[i] == 0:
+        ax1.scatter(x.iloc[i, selected_indexes1[0]], x.iloc[i, selected_indexes1[1]], color='b', marker='o')
+    elif y_list[i] == 1:
+        ax1.scatter(x.iloc[i, selected_indexes1[0]], x.iloc[i, selected_indexes1[1]], color='g', marker='o')
+    elif y_list[i] == 2:
+        ax1.scatter(x.iloc[i, selected_indexes1[0]], x.iloc[i, selected_indexes1[1]], color='pink', marker='o')
+    elif y_list[i] == 3:
+        ax1.scatter(x.iloc[i, selected_indexes1[0]], x.iloc[i, selected_indexes1[1]], color='r', marker='o')
+    elif y_list[i] == 4:
+        ax1.scatter(x.iloc[i, selected_indexes1[0]], x.iloc[i, selected_indexes1[1]], color='y', marker='o')
+
 # Predict
 predict = clf.predict(test)
 print(predict)
+
+ax2 = plt.subplot(222)
+ax2.set_title("Predict Result")
+ax2.set_xlabel("Optical Reflectance Intensity on Wavelength %f" % wl[selected_indexes1[0]])
+ax2.set_ylabel("Optical Reflectance Intensity on Wavelength %f" % wl[selected_indexes1[1]])
+ax2.set_xticks([500, 600, 700], ('500', '600', '700'))
+for i in range(len(predict)):
+    if predict[i] == 0:
+        ax2.scatter(test.iloc[i, selected_indexes1[0]], test.iloc[i, selected_indexes1[1]], color='b', marker='x')
+    elif predict[i] == 1:
+        ax2.scatter(test.iloc[i, selected_indexes1[0]], test.iloc[i, selected_indexes1[1]], color='g', marker='x')
+    elif predict[i] == 2:
+        ax2.scatter(test.iloc[i, selected_indexes1[0]], test.iloc[i, selected_indexes1[1]], color='pink', marker='x')
+    elif predict[i] == 3:
+        ax2.scatter(test.iloc[i, selected_indexes1[0]], test.iloc[i, selected_indexes1[1]], color='r', marker='x')
+    elif predict[i] == 4:
+        ax2.scatter(test.iloc[i, selected_indexes1[0]], test.iloc[i, selected_indexes1[1]], color='y', marker='x')
+
 
 # Select features and fit the model
 dt = DecisionTreeClassifier()
@@ -68,11 +106,50 @@ print(dt_selector.ranking_)
 print("Number of selected feature: %d" % dt_selector.n_features_)
 print("The selected indexes of features are", selected_indexes2)
 print("They are wavelength of [", end="")
+wl_list = []
 for index in selected_indexes2:
     print(wl[index], end=" ")
+    wl_list.append(wl[index])
 print("]")
 print("Accuracy: %s" % dt_clf.score(x_test, y_test))
+
+ax3 = plt.subplot(223)
+ax3.set_title("Transformed X and Y for Decision Tree")
+ax3.set_xlabel("Selected Wavelength")
+ax3.set_ylabel("Optical Reflectance Intensity on Wavelength")
+ax3.set_xticks([500, 600, 700], ('500', '600', '700'))
+for i in range(len(y_list)):
+    if y_list[i] == 0:
+        ax3.plot(wl_list, x.iloc[i, selected_indexes2], color='b')
+    elif y_list[i] == 1:
+        ax3.plot(wl_list, x.iloc[i, selected_indexes2], color='g')
+    elif y_list[i] == 2:
+        ax3.plot(wl_list, x.iloc[i, selected_indexes2], color='pink')
+    elif y_list[i] == 3:
+        ax3.plot(wl_list, x.iloc[i, selected_indexes2], color='r')
+    elif y_list[i] == 4:
+        ax3.plot(wl_list, x.iloc[i, selected_indexes2], color='y')
 
 # Predict
 dt_predict = dt_clf.predict(test)
 print(dt_predict)
+
+ax4 = plt.subplot(224)
+ax4.set_title("Predict Result")
+ax4.set_xlabel("Selected Wavelength")
+ax4.set_ylabel("Optical Reflectance Intensity on Wavelength")
+ax4.set_xticks([500, 600, 700], ('500', '600', '700'))
+for i in range(len(dt_predict)):
+    if dt_predict[i] == 0:
+        ax4.plot(wl_list, test.iloc[i, selected_indexes2], color='b')
+    elif dt_predict[i] == 1:
+        ax4.plot(wl_list, test.iloc[i, selected_indexes2], color='g')
+    elif dt_predict[i] == 2:
+        ax4.plot(wl_list, test.iloc[i, selected_indexes2], color='pink')
+    elif dt_predict[i] == 3:
+        ax4.plot(wl_list, test.iloc[i, selected_indexes2], color='r')
+    elif dt_predict[i] == 4:
+        ax4.plot(wl_list, test.iloc[i, selected_indexes2], color='y')
+
+plt.tight_layout()
+plt.show()

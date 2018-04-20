@@ -96,8 +96,6 @@ ax3.set_title("Transformed X and Y for Decision Tree")
 ax3.set_xlabel("Wavelength")
 ax3.set_ylabel("Spectrum")
 ax3.set_xticks([500, 600, 700], ('500', '600', '700'))
-y_list = y.tolist()
-
 for i in range(len(y_list)):
     if y_list[i] == 0:
         ax3.scatter(wl[selected_index2], x.iloc[i, selected_index2], color='g', marker='o')
