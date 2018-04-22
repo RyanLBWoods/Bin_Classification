@@ -14,18 +14,17 @@ test = pd.read_csv('./multiclass/XtoClassify.csv', header=None)
 y = y[0]
 wl = wl[0]
 
-best = []
 # Split training and testing sets
 x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, random_state=0)
 
 hl = []
 n = 1
-time_use = []
+best_hls = {}
 while n < 11:
     for i in range(10):
         hl.append(n)
         hls = tuple(hl)
-        clf = neural_network.MLPClassifier(hidden_layer_sizes=hls, solver='lbfgs', activation='relu', random_state=1)
+        clf = neural_network.MLPClassifier(hidden_layer_sizes=hls, solver='lbfgs', activation='relu', max_iter=1000, random_state=0)
         start = time.time()
         clf.fit(x_train, y_train)
         cost = time.time() - start
@@ -36,21 +35,20 @@ while n < 11:
                 correct = correct + 1
         ac = correct / len(y_test)
         if ac == 1:
-            best.append(hls)
-            time_use.append(str(cost))
-            print(hls)
-            print(cost)
+            best_hls[hls] = cost
     hl = []
     n = n + 1
-exit(0)
-clf = neural_network.MLPClassifier(hidden_layer_sizes=best[1], solver='lbfgs', activation='logistic', random_state=1)
+fastest = min(zip(best_hls.values(), best_hls.keys()))
+print(fastest)
+
+# Classification
+clf = neural_network.MLPClassifier(hidden_layer_sizes=fastest[1], solver='lbfgs', activation='relu', random_state=1)
 
 # Train model
-clf.fit(x, y)
-print('Training cost', time.time() - start, 'second')
 start = time.time()
+clf.fit(x, y)
+print('Training cost', time.time() - start, 'seconds')
 y_predict = clf.predict(test)
-print('Prediction test cost', time.time() - start, 'second')
 
 # Output prediction to csv file
 # output = pd.DataFrame(y_predict)
