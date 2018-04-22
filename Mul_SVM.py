@@ -19,7 +19,7 @@ clf = svm.SVC(kernel='linear')
 t_mae = - cross_validation.cross_val_score(clf, x, y, cv=5, scoring='neg_mean_absolute_error')
 t_mse = - cross_validation.cross_val_score(clf, x, y, cv=5, scoring='neg_mean_squared_error')
 print('Mean absolute error of 5-fold cross validation：', t_mae)
-print('Mean squared error of 5-fold cross validation：',t_mse)
+print('Mean squared error of 5-fold cross validation：', t_mse)
 # Train model
 start = time.time()
 clf.fit(x, y)
@@ -27,7 +27,7 @@ print('Training cost', time.time() - start, 'second')
 start = time.time()
 y_predict = clf.predict(x_test)
 print('Prediction test cost', time.time() - start, 'second')
-# exit(0)
+
 # Output prediction to csv file
 output = pd.DataFrame(y_predict)
 output.to_csv('./multiclass/PredictedClass_SVMLinear.csv', index=None, header=None)

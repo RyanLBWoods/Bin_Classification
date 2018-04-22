@@ -72,6 +72,11 @@ for i in range(len(y_list)):
 predict = clf.predict(test)
 print(predict)
 
+# Output prediction to csv file
+output = pd.DataFrame(predict)
+output.to_csv('./multiclass/PredictedClass_LinearSVC.csv', index=None, header=None)
+
+# Plot prediction results
 ax2 = plt.subplot(222)
 ax2.set_title("Predict Result")
 ax2.set_xlabel("Optical Reflectance Intensity on Wavelength %f" % wl[selected_indexes1[0]])
@@ -113,6 +118,7 @@ for index in selected_indexes2:
 print("]")
 print("Accuracy: %s" % dt_clf.score(x_test, y_test))
 
+# Plot transformed X and Y
 ax3 = plt.subplot(223)
 ax3.set_title("Transformed X and Y for Decision Tree")
 ax3.set_xlabel("Selected Wavelength")
@@ -134,6 +140,11 @@ for i in range(len(y_list)):
 dt_predict = dt_clf.predict(test)
 print(dt_predict)
 
+# Output prediction to csv file
+output = pd.DataFrame(dt_predict)
+output.to_csv('./multiclass/PredictedClass_DecisionTree.csv', index=None, header=None)
+
+# Plot prediction results
 ax4 = plt.subplot(224)
 ax4.set_title("Predict Result")
 ax4.set_xlabel("Selected Wavelength")

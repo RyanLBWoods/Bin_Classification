@@ -24,7 +24,8 @@ while n < 11:
     for i in range(10):
         hl.append(n)
         hls = tuple(hl)
-        clf = neural_network.MLPClassifier(hidden_layer_sizes=hls, solver='lbfgs', activation='relu', max_iter=1000, random_state=0)
+        clf = neural_network.MLPClassifier(hidden_layer_sizes=hls, solver='lbfgs', activation='relu', max_iter=1000,
+                                           random_state=0)
         start = time.time()
         clf.fit(x_train, y_train)
         cost = time.time() - start
@@ -38,11 +39,12 @@ while n < 11:
             best_hls[hls] = cost
     hl = []
     n = n + 1
+
+# Get best hidden layer size by estimating the time cost for training
 fastest = min(zip(best_hls.values(), best_hls.keys()))
-print(fastest)
 
 # Classification
-clf = neural_network.MLPClassifier(hidden_layer_sizes=fastest[1], solver='lbfgs', activation='relu', random_state=1)
+clf = neural_network.MLPClassifier(hidden_layer_sizes=fastest[1], solver='lbfgs', activation='relu', random_state=0)
 
 # Train model
 start = time.time()
@@ -51,8 +53,8 @@ print('Training cost', time.time() - start, 'seconds')
 y_predict = clf.predict(test)
 
 # Output prediction to csv file
-# output = pd.DataFrame(y_predict)
-# output.to_csv('./multiclass/PredictedClass_NeuralNet.csv', index=None, header=None)
+output = pd.DataFrame(y_predict)
+output.to_csv('./multiclass/PredictedClass_NeuralNet.csv', index=None, header=None)
 
 # Plot output
 plt.figure(figsize=(15, 8))
