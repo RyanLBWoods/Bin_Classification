@@ -38,7 +38,7 @@ ax1.set_ylabel("CV score")
 ax1.plot(range(1, len(svc_selector.grid_scores_) + 1), svc_selector.grid_scores_)
 
 # RFECV with Decision Tree Classifier
-dt = DecisionTreeClassifier(random_state=0)
+dt = DecisionTreeClassifier(criterion='entropy', random_state=0)
 dt_selector = RFECV(estimator=dt, step=1, cv=model_selection.StratifiedKFold(3), scoring='accuracy')
 dt_selector.fit(x, y)
 print("Optimal number of features: %d" % dt_selector.n_features_)
