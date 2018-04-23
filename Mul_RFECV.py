@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # Load data
 x = pd.read_csv('./multiclass/X.csv', header=None)
-y = pd.read_csv('./multiclass/Y.csv', header=None)
+y = pd.read_csv('./multiclass/y.csv', header=None)
 wl = pd.read_csv('./multiclass/Wavelength.csv', header=None)
 test = pd.read_csv('./multiclass/XToClassify.csv', header=None)
 

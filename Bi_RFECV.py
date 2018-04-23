@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 # Load data
 x = pd.read_csv('./binary/X.csv', header=None)
-y = pd.read_csv('./binary/Y.csv', header=None)
+y = pd.read_csv('./binary/y.csv', header=None)
 wl = pd.read_csv('./binary/Wavelength.csv', header=None)
 test = pd.read_csv('./binary/XToClassify.csv', header=None)
 
