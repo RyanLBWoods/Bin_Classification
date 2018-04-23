@@ -4,6 +4,7 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 import pandas as pd
 import matplotlib.pyplot as plt
+import time
 
 # Load data
 x = pd.read_csv('./multiclass/X.csv', header=None)
@@ -31,11 +32,17 @@ wl = wl.tolist()
 x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, random_state=0)
 
 # Select features and fit the model
+print("Linear SVC")
 lsvc = LinearSVC()
 svc_selector = RFE(estimator=lsvc, n_features_to_select=2)
+slct_start = time.time()
 svc_selector.fit_transform(x, y)
+print("Time cost for selecting features:", time.time() - slct_start)
+
 clf = LinearSVC()
+start = time.time()
 clf.fit(x_train, y_train)
+print("Time cost:", time.time() - start)
 
 # Get index of selected feature
 selected_indexes1 = svc_selector.get_support(True)
@@ -96,11 +103,17 @@ for i in range(len(predict)):
 
 
 # Select features and fit the model
+print("Decision Tree")
 dt = DecisionTreeClassifier()
 dt_selector = RFE(estimator=dt, n_features_to_select=110)
+slct_start = time.time()
 dt_selector.fit_transform(x, y)
+print("Time cost for selecting features:", time.time() - slct_start)
+
 dt_clf = DecisionTreeClassifier()
+start = time.time()
 dt_clf.fit(x_train, y_train)
+print("Time cost:", time.time() - start)
 
 # Get index of selected feature
 selected_indexes2 = dt_selector.get_support(True)

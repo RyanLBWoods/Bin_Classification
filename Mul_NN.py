@@ -42,6 +42,7 @@ while n < 11:
 
 # Get best hidden layer size by estimating the time cost for training
 fastest = min(zip(best_hls.values(), best_hls.keys()))
+print("Best hidden layer size:", fastest[1])
 
 # Classification
 clf = neural_network.MLPClassifier(hidden_layer_sizes=fastest[1], solver='lbfgs', activation='relu', random_state=0)
