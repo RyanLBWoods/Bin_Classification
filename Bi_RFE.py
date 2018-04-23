@@ -82,10 +82,10 @@ for i in range(len(predict)):
     else:
         ax2.scatter(wl[selected_index1], test.iloc[i, selected_index1], color='r', marker='x')
 
-dt = DecisionTreeClassifier(criterion='entropy')
+dt = DecisionTreeClassifier()
 dt_selector = RFE(estimator=dt, n_features_to_select=1)
 dt_selector.fit_transform(x, y)
-dt_clf = DecisionTreeClassifier(criterion='entropy')
+dt_clf = DecisionTreeClassifier()
 dt_clf.fit(x_train, y_train)
 
 # Get index of selected feature
