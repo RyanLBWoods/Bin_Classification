@@ -96,10 +96,10 @@ for i in range(len(predict)):
 
 
 # Select features and fit the model
-dt = DecisionTreeClassifier(criterion='entropy')
-dt_selector = RFE(estimator=dt, n_features_to_select=115)
+dt = DecisionTreeClassifier()
+dt_selector = RFE(estimator=dt, n_features_to_select=110)
 dt_selector.fit_transform(x, y)
-dt_clf = DecisionTreeClassifier(criterion='entropy')
+dt_clf = DecisionTreeClassifier()
 dt_clf.fit(x_train, y_train)
 
 # Get index of selected feature
